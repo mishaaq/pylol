@@ -8,262 +8,257 @@ import ply.lex as lex
 # tokeny
 tokens = (
     'IDENTIFIER',
+    'STRING',
     'INTEGER',
     'FLOAT',
-    'STRING',
-    'OPERATOR',
-    'RESERVED',
-    'COMA',
-    'PERIODS'
+    'BOOLEAN',
+    'I_HAS_A',
+    'ITZ',
+    'R',
+    'MAEK',
+    'A',
+    'IS_NOW_A',
+    'TYPE',
+    'VISIBLE',
+    'GIMMEH',
+    'SUM_OF',
+    'DIFF_OF',
+    'PRODUCT_OF',
+    'QUOSHUNT_OF',
+    'MOD_OF',
+    'BIGGR_OF',
+    'SMALLR_OF',
+    'BOTH_OF',
+    'EITHER_OF',
+    'WON_OF',
+    'NOT',
+    'ALL_OF',
+    'ANY_OF',
+    'SMOOSH',
+    'MKAY',
+    'BOTH_SAEM',
+    'DIFFRINT',
+    'O_RLY',
+    'YA_RLY',
+    'NO_WAY',
+    'IM_IN_YR',
+    'IM_OUTTA_YR',
+    'GTFO',
+    'HAI',
+    'KTHXBYE',
+    'HOW_DUZ_I',
+    'YR',
+    'AN',
+    'FOUND_YR',
+    'IF_U_SAY_SO',
+    'WTF',
+    'OMG',
+    'OMGWFT',
+    'OIC',
+    'EOL',
 )
 
-def t_DECLARE(t):
+literals = ( '!', )
+
+def t_I_HAS_A(t):
     r'I\s+HAS\s+A\b'
-    t.type = 'RESERVED'
-    t.value = 'DECLARE'
+    t.value = 'I_HAS_A'
     return t
 
 def t_COMMENT(t):
     r'BTW\s[^\n]*'
     pass
 
-def t_PRE(t):
+def t_ITZ(t):
     r'ITZ\b'
-    t.type = 'OPERATOR'
-    t.value = 'PRE'
+    t.value = 'ITZ'
     return t
 
-def t_ASSIGNMENT(t):
+def t_R(t):
     r'R\b'
-    t.type = 'OPERATOR'
-    t.value = 'ASSIGN'
     return t
 
-def t_CAST(t):
+def t_MAEK(t):
     r'MAEK\b'
-    t.type = 'RESERVED'
-    t.value = 'CAST'
     return t
 
 def t_A(t):
     r'A\b'
-    t.type = 'RESERVED'
     return t
 
-def t_CONVERT(t):
+def t_IS_NOW_A(t):
     r'IS\s+NOW\s+A\b'
-    t.type = 'RESERVED'
-    t.value = 'CONVERT'
+    t.value = 'IS_NOW_A'
     return t
 
 def t_TYPE(t):
     r'((?:NUMBA?R)|(?:YARN)|(?:TROOF)|(?:NOOB))\b'
     return t
 
-def t_PRINT(t):
+def t_VISIBLE(t):
     r'VISIBLE\b'
-    t.type = 'RESERVED'
     return t
 
-def t_CRSUPPRESS(t):
-    r'!\b'
-    t.type = 'RESERVED'
-    return t
-
-def t_GET(t):
+def t_GIMMEH(t):
     r'GIMMEH\b'
-    t.type = 'RESERVED'
     return t
 
-def t_SUM(t):
+def t_SUM_OF(t):
     r'SUM\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'SUM'
+    t.value = 'SUM_OF'
     return t
 
-def t_DIFF(t):
+def t_DIFF_OF(t):
     r'DIFF\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'DIFF'
+    t.value = 'DIFF_OF'
     return t
 
-def t_PROD(t):
+def t_PRODUCT_OF(t):
     r'PRODUCT\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'PROD'
+    t.value = 'PRODUCT_OF'
     return t
 
-def t_DIV(t):
+def t_QUOSHUNT_OF(t):
     r'QUOSHUNT\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'DIV'
+    t.value = 'QUOSHUNT_OF'
     return t
 
-def t_MOD(t):
+def t_MOD_OF(t):
     r'MOD\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'MOD'
+    t.value = 'MOD_OF'
     return t
 
-def t_GT(t):
+def t_BIGGR_OF(t):
     r'BIGGR\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'GT'
+    t.value = 'BIGGR_OF'
     return t
 
-def t_LT(t):
+def t_SMALLR_OF(t):
     r'SMALLR\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'LT'
+    t.value = 'SMALLR_OF'
     return t
 
-def t_AND(t):
+def t_BOTH_OF(t):
     r'BOTH\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'AND'
+    t.value = 'BOTH_OF'
     return t
 
-def t_OR(t):
+def t_EITHER_OF(t):
     r'EITHER\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'OR'
+    t.value = 'EITHER_OF'
     return t
 
-def t_XOR(t):
+def t_WON_OF(t):
     r'WON\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'XOR'
+    t.value = 'WON_OF'
     return t
 
 def t_NOT(t):
     r'NOT\b'
-    t.type = 'OPERATOR'
     return t
 
-def t_ALL(t):
+def t_ALL_OF(t):
     r'ALL\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'ALL'
+    t.value = 'ALL_OF'
     return t
 
-def t_ANY(t):
+def t_ANY_OF(t):
     r'ANY\s+OF\b'
-    t.type = 'OPERATOR'
-    t.value = 'ANY'
+    t.value = 'ANY_OF'
     return t
 
-def t_ARGEND(t):
+def t_SMOOSH(t):
+    r'SMOOSH\b'
+    return t
+
+def t_MKAY(t):
     r'MKAY\b'
-    t.type = 'RESERVED'
-    t.value = 'ARGEND'
     return t
 
-def t_EQ(t):
+def t_BOTH_SAEM(t):
     r'BOTH\s+SAEM\b'
-    t.type = 'OPERATOR'
-    t.value = 'EQUALS'
+    t.value = 'BOTH_SAEM'
     return t
 
-def t_NEQ(t):
+def t_DIFFRINT(t):
     r'DIFFRINT\b'
-    t.type = 'OPERATOR'
-    t.value = 'NOTEQUALS'
     return t
 
-def t_IF(t):
+def t_O_RLY(t):
     r'O\s+RLY\?\b'
-    t.type = 'RESERVED'
-    t.value = 'IF'
+    t.value = 'O_RLY'
     return t
 
-def t_TRUE(t):
+def t_YA_RLY(t):
     r'YA\s+RLY\b'
-    t.type = 'RESERVED'
-    t.value = 'TRUE'
+    t.value = 'YA_RLY'
     return t
 
-def t_FALSE(t):
+def t_NO_WAY(t):
     r'NO\s+WAY\b'
-    t.type = 'RESERVED'
-    t.value = 'FALSE'
+    t.value = 'NO_WAY'
     return t
 
-def t_LOOP(t):
+def t_IM_IN_YR(t):
     r'IM\s+IN\s+YR\b'
-    t.type = 'RESERVED'
-    t.value = 'LOOP'
+    t.value = 'IM_IN_YR'
     return t
 
-def t_ENDLOOP(t):
+def t_IM_OUTTA_YR(t):
     r'IM\s+OUTTA\s+YR\b'
-    t.type = 'RESERVED'
-    t.value = 'ENDLOOP'
+    t.value = 'IM_OUTTA_YR'
     return t
 
-def t_BREAK(t):
+def t_GTFO(t):
     r'GTFO\b'
-    t.type = 'RESERVED'
-    t.value = 'BREAK'
     return t
 
-def t_FINISH(t):
+def t_HAI(t):
+    r'HAI\b'
+    return t
+
+def t_KTHXBYE(t):
     r'KTHXBYE\b'
-    t.type = 'RESERVED'
-    t.value = 'FINISH'
     return t
 
-def t_FUNCTION(t):
+def t_HOW_DUZ_I(t):
     r'HOW\s+DUZ\s+I\b'
-    t.type = 'RESERVED'
-    t.value = 'FUNCTION'
+    t.value = 'HOW_DUZ_I'
     return t
 
-def t_ARGUMENT(t):
+def t_YR(t):
     r'YR\b'
-    t.type = 'RESERVED'
-    t.value = 'ARGUMENT'
     return t
 
-def t_COMA(t):
+def t_AN(t):
     r'AN\b'
-    t.type = 'RESERVED'
-    t.value = ','
     return t
 
-def t_RETURN(t):
+def t_FOUND_YR(t):
     r'FOUND\s+YR\b'
-    t.type = 'RESERVED'
-    t.value = 'RETURN'
+    t.value = 'FOUND_YR'
     return t
 
-def t_ENDFUNCTION(t):
+def t_IF_U_SAY_SO(t):
     r'IF\s+U\s+SAY\s+SO\b'
-    t.type = 'RESERVED'
-    t.value = 'ENDFUNCTION'
+    t.value = 'IF_U_SAY_SO'
     return t
 
-def t_SWITCH(t):
+def t_WTF(t):
     r'WTF\?\b'
-    t.type = 'RESERVED'
-    t.value = 'SWITCH'
+    t.value = 'WTF'
     return t
 
-def t_CASE(t):
+def t_OMG(t):
     r'OMG\b'
-    t.type = 'RESERVED'
-    t.value = 'CASE'
     return t
 
-def t_DEFAUTLT(t):
+def t_OMGWFT(t):
     r'OMGWTF\b'
-    t.type = 'RESERVED'
-    t.value = 'DEFAULT'
     return t
 
-def t_END(t):
+def t_OIC(t):
     r'OIC\b'
-    t.type = 'RESERVED'
-    t.value = 'END'
     return t
 
 
@@ -273,12 +268,14 @@ def t_IDENTIFIER(t):
     return t
 
 def t_INTEGER(t):
-    r'\d+'
+    r'-?\d+'
+    t.type = 'INTEGER'
     t.value = int(t.value)
     return t
 
 def t_FLOAT(t):
-    r'\d+\.\d+'
+    r'-?\d+\.\d+'
+    t.type = 'FLOAT'
     t.value = float(t.value)
     return t
 
@@ -288,13 +285,19 @@ def t_STRING(t):
     t.value = t.value[1:-1].decode("string-escape")
     return t
 
-def t_WS(t):
+def t_BOOLEAN(t):
+    r'(?:WIN)|(?:FAIL)'
+    return t
+
+def t_whitespace(t):
     r'\s+'
     pass
 
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
+def t_EOL(t):
+    r'\n'
+    t.lexer.lineno += 1
+    t.value = 'EOL'
+    return t
 
 def t_error(t):
     print "Illegal character '%s'" % t.value[0]
