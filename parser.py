@@ -14,14 +14,15 @@ precedence = (
 )
 
 def p_start(p):
-    '''program : HAI statement_list KTHXBYE'''
+    '''program : HAI EOL statement_list KTHXBYE EOL'''
     p[0] = p[3]
 
 def p_statement_list(p):
-    '''statement_list : statement_list statement
-                      | statement'''
-    if len(p) == 5:
-        p[0] = p[3] if p[1] + [p[3]] else p[1]
+    '''statement_list : statement_list statement EOL
+                      | statement EOL'''
+    if len(p) == 4:
+        p[1].extend([p[2]])
+        p[0] = p[1]
     else:
         p[0] = [p[1]]
 
@@ -53,8 +54,8 @@ def p_statement_assign(p):
     '''statement : IDENTIFIER R expression'''
     p[0] = ['assign', p[1], p[3]]
 
-def p_statement_cast(p):
-    '''statement : IDENTIFIER IS_NOW_A type'''
+def p_statement_convert(p):
+    '''statement : IDENTIFIER IS_NOW_A TYPE'''
     p[0] = ['convert', p[1], p[3]]
 
 def p_statement_if(p):
@@ -90,34 +91,57 @@ def p_argument(p):
     p[0] = p[1]
 
 def p_func_statement_list(p):
-    '''func_statement_list : func_statement_list statement_return EOL func_statement_list
-                           | statement_list
-                           | empty'''
+    '''func_statement_list : func_statement_list statement_return func_statement_list
+                           | statement_list'''
     if len(p) == 5:
         p[0] = p[1] + [p[2]] + p[4]
-    elif len(p) == 2:
-        p[0] = p[1]
     else:
-        p[0] = []
+        p[0] = p[1]
 
+# instrukcja: return
 def p_statement_return(p):
     '''statement_return : FOUND_YR expression'''
     p[0] = ['return', p[2]]
 
+
+# wyrażenie: lista wyrażeń
+def p_expression_list(p):
+    '''expression_list : expression_list AN expression
+                       | expression'''
+    if len(p) == 4:
+        p[1].extend([p[3]])
+        p[0] = p[1]
+    else:
+        p[0] = [p[1]]
+
+# wyrażenie: lista wyrażeń jako argumentów wywołania funkcji
+def p_expression_call_list(p):
+    '''expression_call_list : expression_list expression
+                            | expression'''
+    if len(p) == 3:
+        p[1].extend([p[2]])
+        p[0] = p[1]
+    else:
+        p[0] = [p[1]]
+
+# wyrażenie: wywołanie funkcji
 def p_expression_call(p):
     '''expression : IDENTIFIER expression_call_list'''
     p[0] = ['call', p[1], p[2]]
 
+# wyrażenie: operator
 def p_expression_operator(p):
     '''expression : expression_unary_operator
                   | expression_binary_operator
                   | expression_inf_arity_operator'''
     p[0] = p[1]
 
+# wyrażenie: operator jednoargumentowy
 def p_expression_unary_operator(p):
     '''expression_unary_operator : NOT expression'''
     p[0] = ['not', p[2]]
 
+# wyrażenie: operator dwuargumentowy
 def p_expression_binary_operator(p):
     '''expression_binary_operator : SUM_OF expression AN expression
                                   | DIFF_OF expression AN expression
@@ -145,6 +169,7 @@ def p_expression_binary_operator(p):
              'DIFFRINT'     : lambda x, y: ['!=', x, y]
            }[p[1]](p[2], p[4])
 
+# wyrażenie: operator wieloargumentowy
 def p_expression_inf_arity(p):
     '''expression_inf_arity_operator : ALL_OF expression_list MKAY
                                      | ANY_OF expression_list MKAY'''
@@ -152,30 +177,16 @@ def p_expression_inf_arity(p):
             'ANY_OF' : lambda x: ['any', x]
            }[p[1]](p[2])
 
-def p_expression_list(p):
-    '''expression_list : expression_list AN expression
-                       | expression_call_list'''
-    if len(p) == 4:
-        p[0] = p[3] if p[1] + [p[3]] else p[1]
-    else:
-        p[0] = [p[1]]
-
-def p_expression_call_list(p):
-    '''expression_call_list : expression_list expression
-                            | expression'''
-    if len(p) == 3:
-        p[0] = p[2] if p[1] + [p[2]] else p[1]
-    else:
-        p[0] = [p[1]]
-
+# wyrażenie: rzutowanie zmiennej na typ
 def p_expression_cast(p):
-    '''expression : MAEK IDENTIFIER A type
-                  | MAEK IDENTIFIER type'''
+    '''expression : MAEK IDENTIFIER A TYPE
+                  | MAEK IDENTIFIER TYPE'''
     if len(p) == 6:
         p[0] = ['cast', p[2], p[4]]
     else:
         p[0] = ['cast', p[2], p[3]]
 
+# wyrażenie: argument wyrażenia
 def p_expression_variable(p):
     '''expression : string
                   | FLOAT
@@ -184,6 +195,7 @@ def p_expression_variable(p):
                   | variable'''
     p[0] = p[1]
 
+# argument: tekst
 def p_string(p):
     '''string : STRING
               | SMOOSH expression_list MKAY'''
@@ -192,17 +204,11 @@ def p_string(p):
     else:
         p[0] = ['concat', p[2]]
 
+# argument: zmienna
 def p_variable(p):
     '''variable : IDENTIFIER'''
-    p[0] = ['val', p[1]]
-
-def p_type(p):
-    '''type : TYPE'''
-    p[0] = p[1]
-
-def p_empty(p):
-    'empty :'
-    pass
+    p[0] = ['value', p[1]]
+    
 
 def p_error(p):
     print "Syntax error at token %s in line %d" % (p.value, p.lineno)

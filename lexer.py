@@ -262,6 +262,7 @@ def t_OIC(t):
     return t
 
 
+
 def t_IDENTIFIER(t):
     r'[a-zA-Z][a-zA-Z0-9_]*?\b'
     t.type = 'IDENTIFIER'
@@ -287,11 +288,8 @@ def t_STRING(t):
 
 def t_BOOLEAN(t):
     r'(?:WIN)|(?:FAIL)'
+    t.type = 'BOOLEAN'
     return t
-
-def t_whitespace(t):
-    r'\s+'
-    pass
 
 def t_EOL(t):
     r'\n'
@@ -299,11 +297,15 @@ def t_EOL(t):
     t.value = 'EOL'
     return t
 
+def t_WS(t):
+    r'\s+'
+    pass
+
 def t_error(t):
     print "Illegal character '%s'" % t.value[0]
     t.lexer.skip(1)
 
-lexer = lex.lex(debug=1)
+lexer = lex.lex()
 
 if __name__ == "__main__":
     lex.runmain()
