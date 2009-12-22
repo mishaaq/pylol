@@ -185,7 +185,7 @@ def t_DIFFRINT(t):
     return t
 
 def t_O_RLY(t):
-    r'O\s+RLY\?\b'
+    r'O\s+RLY\?'
     t.value = 'O_RLY'
     return t
 

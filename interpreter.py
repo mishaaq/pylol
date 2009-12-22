@@ -8,6 +8,9 @@ import types
 class Break(Exception):
     pass
 
+class Return(Exception):
+    pass
+
 class LOLInterpreter(object):
 
     def __init__(self, tree):
@@ -15,7 +18,7 @@ class LOLInterpreter(object):
         self.__variables = []
 
     def execute(self):
-        self.__variables.append({"IT": None})
+        self.__variables.append({'IT': None})
         self.__execute_statement_list(self.__tree)
     
     def __execute_statement_list(self, statement_list):
@@ -50,25 +53,46 @@ class LOLInterpreter(object):
             else:
                 raise Exception("Cannot convert identifier: %s to type %s" % (statement[1], statement[2]))
         elif statement[0] == 'if':
-            pass
+            if self.__get_variable('IT') == True:
+                self.__execute_statement_list(statement[1])
+            elif len(statement) == 3:
+                self.__execute_statement_list(statement[2])
         elif statement[0] == 'loop':
             try:
                 while(True):
-                    self.__execute_statement_list(statement[4])
+                    self.__execute_statement_list(statement[2])
             except Break:
                 pass
         elif statement[0] == 'break':
             raise Break()
         elif statement[0] == 'function':
-            # TODO: function definition
-            raise Exception("Function definition not implemented yet!")
+            self.__declare_variable(statement[1])
+            self.__set_variable(statement[1], [statement[2], statement[3]])
+        elif statement[0] == 'return':
+            self.__set_variable('IT', self.__evaluate_expression(statement[1]))
+            raise Return()
+        elif statement[0] == 'it':
+            self.__set_variable('IT', self.__evaluate_expression(statement[1]))
     
     def __evaluate_expression(self, expression):
         if type(expression) != types.ListType:
             return expression
         if   expression[0] == 'call':
-            # TODO: function call
-            raise Exception("Function call not implemented yet!")
+            function = self.__get_variable(expression[1])
+            values = [self.__evaluate_expression(call_argument) for call_argument in expression[2]]
+            try:
+                self.__variables.append({'IT' : None})
+                for argument, value in zip(function[0], values):
+                    self.__declare_variable(argument)
+                    self.__set_variable(argument, value)
+                self.__execute_statement_list(function[1])
+            except Break:
+                ret = None
+            except Return:
+                ret = self.__get_variable('IT')
+            finally:
+                self.__variables.pop()
+            return ret
         elif expression[0] == 'not':
             return not self.__evaluate_expression([1])
         elif expression[0] == '+':
@@ -111,7 +135,7 @@ class LOLInterpreter(object):
             else:
                 raise Exception("Cannot cast expression: %s to type %s" % (expression[1], expression[2]))
         elif expression[0] == 'concat':
-            return ''.join(map(lambda item: self.__evaluate_expression(item), expression[1]))
+            return ''.join(map(lambda item: str(self.__evaluate_expression(item)), expression[1]))
         elif expression[0] == 'value':
                 return self.__get_variable(expression[1])
     

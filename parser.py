@@ -14,7 +14,8 @@ precedence = (
 )
 
 def p_start(p):
-    '''program : HAI EOL statement_list KTHXBYE EOL'''
+    '''program : HAI EOL statement_list KTHXBYE EOL
+               | HAI EOL statement_list KTHXBYE'''
     p[0] = p[3]
 
 def p_statement_list(p):
@@ -28,7 +29,7 @@ def p_statement_list(p):
 
 def p_statement(p):
     '''statement : expression'''
-    p[0] = p[1]
+    p[0] = ['it', p[1]]
 
 def p_statement_print(p):
     '''statement : VISIBLE expression '!'
@@ -59,12 +60,12 @@ def p_statement_convert(p):
     p[0] = ['convert', p[1], p[3]]
 
 def p_statement_if(p):
-    '''statement : O_RLY EOL YA_RLY statement_list NO_WAY statement_list OIC
-                 | O_RLY EOL YA_RLY statement_list OIC'''
-    if len(p) == 8:
-        p[0] = ('if', p[4], p[6])
+    '''statement : O_RLY EOL YA_RLY EOL statement_list NO_WAY EOL statement_list OIC
+                 | O_RLY EOL YA_RLY EOL statement_list OIC'''
+    if len(p) == 10:
+        p[0] = ['if', p[5], p[8]]
     else:
-        p[0] = ('if', p[4])
+        p[0] = ['if', p[5]]
 
 def p_statement_loop(p):
     '''statement : IM_IN_YR IDENTIFIER EOL statement_list IM_OUTTA_YR IDENTIFIER'''
@@ -75,34 +76,26 @@ def p_statement_break(p):
     p[0] = ['break']
 
 def p_statement_function(p):
-    '''statement : HOW_DUZ_I IDENTIFIER argument_list func_statement_list IF_U_SAY_SO EOL'''
-    p[0] = ['function', p[2], p[3], p[4]]
+    '''statement : HOW_DUZ_I IDENTIFIER argument_list EOL statement_list IF_U_SAY_SO'''
+    p[0] = ['function', p[2], p[3], p[5]]
+
+# instrukcja: return
+def p_statement_return(p):
+    '''statement : FOUND_YR expression'''
+    p[0] = ['return', p[2]]
 
 def p_argument_list(p):
     '''argument_list : argument_list AN argument
                      | YR argument'''
     if len(p) == 4:
-        p[0] = p[3] if p[1] + [p[3]] else p[1]
+        p[1].extend([p[3]])
+        p[0] = p[1]
     else:
         p[0] = [p[2]]
 
 def p_argument(p):
     '''argument : IDENTIFIER'''
     p[0] = p[1]
-
-def p_func_statement_list(p):
-    '''func_statement_list : func_statement_list statement_return func_statement_list
-                           | statement_list'''
-    if len(p) == 5:
-        p[0] = p[1] + [p[2]] + p[4]
-    else:
-        p[0] = p[1]
-
-# instrukcja: return
-def p_statement_return(p):
-    '''statement_return : FOUND_YR expression'''
-    p[0] = ['return', p[2]]
-
 
 # wyrażenie: lista wyrażeń
 def p_expression_list(p):
@@ -114,6 +107,11 @@ def p_expression_list(p):
     else:
         p[0] = [p[1]]
 
+# wyrażenie: wywołanie funkcji
+def p_expression_call(p):
+    '''expression : IDENTIFIER expression_call_list'''
+    p[0] = ['call', p[1], p[2]]
+
 # wyrażenie: lista wyrażeń jako argumentów wywołania funkcji
 def p_expression_call_list(p):
     '''expression_call_list : expression_list expression
@@ -123,11 +121,6 @@ def p_expression_call_list(p):
         p[0] = p[1]
     else:
         p[0] = [p[1]]
-
-# wyrażenie: wywołanie funkcji
-def p_expression_call(p):
-    '''expression : IDENTIFIER expression_call_list'''
-    p[0] = ['call', p[1], p[2]]
 
 # wyrażenie: operator
 def p_expression_operator(p):
