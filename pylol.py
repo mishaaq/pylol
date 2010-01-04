@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 __author__="Michał Żarłok"
@@ -30,6 +30,8 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
     try:
+        if argv[1] == '--help':
+            raise KeyError
         if argv[1] == '-t':
             if argv[2] != 'stdin':
                 with open(argv[2]) as lolfile:

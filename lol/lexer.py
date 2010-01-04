@@ -292,6 +292,10 @@ def t_BOOLEAN(t):
     t.type = 'BOOLEAN'
     return t
 
+def t_MULT(t):
+    r'(\.{3}\n)|\u2026'
+    pass
+
 def t_EOL(t):
     r',|\n'
     if t.value == '\n':
@@ -306,6 +310,7 @@ def t_WS(t):
 def t_error(t):
     print "Illegal character '%s' at line %d" % (t.value[0], t.lexer.lineno)
     t.lexer.skip(1)
+
 
 lexer = lex.lex(optimize=1)
 
