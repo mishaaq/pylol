@@ -8,9 +8,7 @@ import ply.yacc as yacc
 from lexer import tokens
 
 precedence = (
-    ('nonassoc', 'VISIBLE'),
-    ('left', 'SUM_OF', 'DIFF_OF'),
-    ('left', 'PRODUCT_OF', 'QUOSHUNT_OF'),
+    ('right', 'IDENTIFIER'),
 )
 
 def p_start(p):
@@ -114,7 +112,7 @@ def p_expression_call(p):
 
 # wyrażenie: lista wyrażeń jako argumentów wywołania funkcji
 def p_expression_call_list(p):
-    '''expression_call_list : expression_list expression
+    '''expression_call_list : expression_call_list expression
                             | expression'''
     if len(p) == 3:
         p[1].extend([p[2]])

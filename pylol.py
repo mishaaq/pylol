@@ -5,8 +5,8 @@ __author__="Michał Żarłok"
 __date__ ="$2009-12-20 23:35:57$"
 
 import sys
-from interpreter import LOLInterpreter
-from parser import parser
+from lol.interpreter import LOLInterpreter
+from lol.parser import parser
 
 def main(argv=None):
     if argv is None:
@@ -19,7 +19,7 @@ def main(argv=None):
             with open(sys.argv[1]) as lolfile:
                 tree = parser.parse(lolfile.read())
                 interpret = LOLInterpreter(tree)
-                interpret.execute()
+                interpret.execute_program()
     except KeyError:
         print "Usage:"
         print "\tpylol.py [-t] <file>\n"

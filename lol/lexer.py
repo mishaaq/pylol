@@ -281,7 +281,8 @@ def t_FLOAT(t):
     return t
 
 def t_STRING(t):
-    r'("|\')[^\'"]*(\'|")'
+    #TODO: Żeby przepuszczało cudzysłowy
+    r'("|\').*?(?<!:\'|?<!:")'
     t.type = 'STRING'
     t.value = t.value[1:-1].decode("string-escape")
     return t
@@ -302,10 +303,10 @@ def t_WS(t):
     pass
 
 def t_error(t):
-    print "Illegal character '%s'" % t.value[0]
+    print "Illegal character '%s' at line %d" % (t.value[0], t.lexer.lineno)
     t.lexer.skip(1)
 
-lexer = lex.lex()
+lexer = lex.lex(optimize=1)
 
 if __name__ == "__main__":
     lex.runmain()
