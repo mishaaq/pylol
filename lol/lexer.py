@@ -293,8 +293,9 @@ def t_BOOLEAN(t):
     return t
 
 def t_EOL(t):
-    r'\n'
-    t.lexer.lineno += 1
+    r',|\n'
+    if t.value == '\n':
+        t.lexer.lineno += 1
     t.value = 'EOL'
     return t
 

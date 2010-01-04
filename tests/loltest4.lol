@@ -2,8 +2,7 @@ HAI
 VISIBLE "Choose one of R, Y, G, B: "
 I HAS A COLOR
 GIMMEH COLOR
-COLOR
-WTF?
+COLOR, WTF?
     OMG "R"
         VISIBLE "RED FISH"
         GTFO

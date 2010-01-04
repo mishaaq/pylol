@@ -37,9 +37,9 @@ class LOLInterpreter(object):
         if not statement:
             return
         elif statement[0] == 'print':
-            print self.__print_string(self.__evaluate_expression(statement[1])),
+            print self.__print_string(str(self.__evaluate_expression(statement[1]))),
         elif statement[0] == 'printline':
-            print self.__print_string(self.__evaluate_expression(statement[1]))
+            print self.__print_string(str(self.__evaluate_expression(statement[1])))
         elif statement[0] == 'get':
             self.__set_variable(statement[1], raw_input())
         elif statement[0] == 'declare':
