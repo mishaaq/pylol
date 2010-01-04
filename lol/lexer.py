@@ -53,7 +53,7 @@ tokens = (
     'IF_U_SAY_SO',
     'WTF',
     'OMG',
-    'OMGWFT',
+    'OMGWTF',
     'OIC',
     'EOL',
 )
@@ -245,7 +245,7 @@ def t_IF_U_SAY_SO(t):
     return t
 
 def t_WTF(t):
-    r'WTF\?\b'
+    r'WTF\?'
     t.value = 'WTF'
     return t
 
@@ -253,7 +253,7 @@ def t_OMG(t):
     r'OMG\b'
     return t
 
-def t_OMGWFT(t):
+def t_OMGWTF(t):
     r'OMGWTF\b'
     return t
 
@@ -282,7 +282,7 @@ def t_FLOAT(t):
 
 def t_STRING(t):
     #TODO: Żeby przepuszczało cudzysłowy
-    r'("|\').*?(?<!:\'|?<!:")'
+    r'("|\')[^\'"]*(\'|")'
     t.type = 'STRING'
     t.value = t.value[1:-1].decode("string-escape")
     return t

@@ -13,16 +13,18 @@ def main(argv=None):
         argv = sys.argv
     try:
         if argv[1] == '-t':
-            with open(sys.argv[2]) as lolfile:
+            with open(argv[2]) as lolfile:
                 print parser.parse(lolfile.read())
         else:
-            with open(sys.argv[1]) as lolfile:
+            with open(argv[1]) as lolfile:
                 tree = parser.parse(lolfile.read())
                 interpret = LOLInterpreter(tree)
                 interpret.execute_program()
     except KeyError:
         print "Usage:"
         print "\tpylol.py [-t] <file>\n"
+    except IOError:
+        print "No such file or directory: %s" % (argv[2] if len(argv) == 3 else argv[1])
 
 if __name__ == "__main__":
     sys.exit(main());

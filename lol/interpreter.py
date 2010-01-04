@@ -26,6 +26,10 @@ class LOLInterpreter(object):
             try:
                 for statement in statement_list:
                     self.__execute_statement(statement)
+            except Break:
+                raise Break
+            except Return:
+                raise Return
             except Exception as e:
                 print e
     
@@ -64,6 +68,18 @@ class LOLInterpreter(object):
         elif statement[0] == 'loop':
             try:
                 while(True):
+                    self.__execute_statement_list(statement[2])
+            except Break:
+                pass
+        elif statement[0] == 'switch':
+            it = self.__get_variable('IT')
+            try:
+                default = True
+                for case in statement[1]:
+                    if it == case[0] or not default:
+                        self.__execute_statement_list(case[1])
+                        default = False
+                if default == True:
                     self.__execute_statement_list(statement[2])
             except Break:
                 pass

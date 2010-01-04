@@ -25,6 +25,9 @@ def p_statement_list(p):
     else:
         p[0] = [p[1]]
 
+def p_statement_empty(p):
+    '''statement : '''
+
 def p_statement(p):
     '''statement : expression'''
     p[0] = ['it', p[1]]
@@ -64,6 +67,31 @@ def p_statement_if(p):
         p[0] = ['if', p[5], p[8]]
     else:
         p[0] = ['if', p[5]]
+
+def p_statement_switch(p):
+    '''statement : WTF EOL cases_list OMGWTF statement_list OIC
+                 | WTF EOL cases_list OIC'''
+    if len(p) == 7:
+        p[0] = ['switch', p[3], p[5]]
+    else:
+        p[0] = ['switch', p[3]]
+
+def p_cases_list(p):
+    '''cases_list : cases_list case
+                  | case'''
+    if len(p) == 3:
+        p[1].extend([p[2]])
+        p[0] = p[1]
+    else:
+        p[0] = [p[1]]
+
+def p_case(p):
+    '''case : OMG literal EOL statement_list
+            | OMG literal EOL'''
+    if len(p) == 5:
+        p[0] = [p[2], p[4]]
+    else:
+        p[0] = [p[2], []]
 
 def p_statement_loop(p):
     '''statement : IM_IN_YR IDENTIFIER EOL statement_list IM_OUTTA_YR IDENTIFIER'''
@@ -184,6 +212,12 @@ def p_expression_variable(p):
                   | INTEGER
                   | BOOLEAN
                   | variable'''
+    p[0] = p[1]
+
+def p_literal(p):
+    '''literal : FLOAT
+               | INTEGER
+               | STRING'''
     p[0] = p[1]
 
 # argument: tekst
