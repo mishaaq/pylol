@@ -1,5 +1,5 @@
 HAI
-VISIBLE "Choose one of R, Y, G, B: "
+VISIBLE "Choose one of R, Y, G, B:: "
 I HAS A COLOR
 GIMMEH COLOR
 BTW check color

@@ -1,5 +1,5 @@
 HAI
 I HAS A VAR
 GIMMEH VAR
-VISIBLE SMOOSH "You said :" " AN VAR AN " :" !!" MKAY
+VISIBLE SMOOSH "You said :"" AN VAR AN ":" !!" MKAY
 KTHXBYE
