@@ -2,13 +2,13 @@ HAI
 VISIBLE "Choose one of R, Y, G, B: "
 I HAS A COLOR
 GIMMEH COLOR
-    BTW check color
+BTW check color
 COLOR, WTF?
     OMG "R"
         VISIBLE "RED FISH"
         GTFO
     OMG "Y"
-        VISIBLE "YELLOW FISH"
+        VISIBLE 'YELLOW FISH'
     OMG "G"
     OMG "B"
         VISIBLE ...

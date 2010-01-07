@@ -12,7 +12,9 @@ class Return(Exception):
     pass
 
 class LOLInterpreter(object):
+    """
 
+    """
     def __init__(self, tree):
         self.__tree = tree
         self.__variables = []
@@ -145,15 +147,18 @@ class LOLInterpreter(object):
             elif expression[0] == 'any':
                 return any([self.__evaluate_expression(expr) for expr in expression[1]])
             elif expression[0] == 'cast':
-                if   expression[2] == 'YARN':
-                    return str(expression[1])
-                elif expression[2] == 'NUMBR':
-                    return int(expression[1])
-                elif expression[2] == 'NUMBAR':
-                    return float(expression[1])
-                elif expression[2] == 'TROOF':
-                    return boolean(expression[1])
-                else:
+                try:
+                    if   expression[2] == 'YARN':
+                        return str(expression[1])
+                    elif expression[2] == 'NUMBR':
+                        return int(expression[1])
+                    elif expression[2] == 'NUMBAR':
+                        return float(expression[1])
+                    elif expression[2] == 'TROOF':
+                        return boolean(expression[1])
+                    else:
+                        raise Exception("Cannot cast expression: %s to type %s" % (expression[1], expression[2]))
+                except ValueError:
                     raise Exception("Cannot cast expression: %s to type %s" % (expression[1], expression[2]))
             elif expression[0] == 'concat':
                 return ''.join(map(lambda item: str(self.__evaluate_expression(item)), expression[1]))
@@ -185,4 +190,4 @@ class LOLInterpreter(object):
         return string
 
 if __name__ == "__main__":
-    print "Hello World"
+    print "This is interpreter - it cannot be run alone."

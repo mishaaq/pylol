@@ -282,7 +282,7 @@ def t_FLOAT(t):
 
 def t_STRING(t):
     #TODO: Żeby przepuszczało cudzysłowy
-    r'("|\')[^\'"]*(\'|")'
+    r'(\"|\')(?:[^:\"]|::|:\")*(\"|\')'
     t.type = 'STRING'
     t.value = t.value[1:-1].decode("string-escape")
     return t
